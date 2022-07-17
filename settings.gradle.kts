@@ -15,6 +15,7 @@ dependencyResolutionManagement {
     val kotlinpoetVersion: String by settings
 
     repositories {
+        mavenLocal()
         mavenCentral()
     }
     versionCatalogs {
@@ -27,8 +28,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "konfig"
-include("api")
-include("impl")
-include("ksp")
-include("kts")
-include("sample")
+include("api", "impl", "ksp", "kts", "sample")
