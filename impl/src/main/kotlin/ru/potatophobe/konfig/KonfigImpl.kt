@@ -40,6 +40,11 @@ private class KonfigScopeImpl : KonfigScope {
     }
 }
 
+/**
+ * Provides access into KonfigScope
+ *
+ * @return result Konfig
+ * */
 @KonfigDsl
 fun konfig(konfigBlock: KonfigScope.() -> Unit): Konfig {
     return KonfigScopeImpl().apply(konfigBlock).toKonfig()

@@ -44,6 +44,9 @@ class KonfigKtsEngineFactory : KotlinJsr223JvmScriptEngineFactoryBase() {
     }
 }
 
+/**
+ * Factory to load Konfig from `*.konfig.kts` file
+ * */
 class KonfigKtsFactory {
     companion object {
         private const val defaultKonfigKtsName = "application.konfig.kts"
