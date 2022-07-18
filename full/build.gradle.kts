@@ -1,7 +1,7 @@
 val projectRevision: String by project
 
 plugins {
-    id("java-platform")
+    kotlin("jvm")
     id("maven-publish")
     id("signing")
 }
@@ -9,15 +9,16 @@ plugins {
 group = "ru.potatophobe.konfig"
 version = projectRevision
 
-javaPlatform {
-    allowDependencies()
-}
-
 dependencies {
     api(project(":api"))
     api(project(":impl"))
     api(project(":kts"))
     api(project(":utils"))
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
@@ -38,7 +39,7 @@ publishing {
     }
     publications {
         create<MavenPublication>("maven") {
-            from(components["javaPlatform"])
+            from(components["java"])
             pom {
                 name.set("Konfig Full")
                 description.set("Full set of Konfig modules")
