@@ -8,7 +8,11 @@ import javax.script.ScriptEngine
 import javax.script.ScriptEngineManager
 import javax.script.SimpleScriptContext
 import kotlin.script.experimental.annotations.KotlinScript
-import kotlin.script.experimental.api.*
+import kotlin.script.experimental.api.ScriptAcceptedLocation
+import kotlin.script.experimental.api.ScriptCompilationConfiguration
+import kotlin.script.experimental.api.acceptedLocations
+import kotlin.script.experimental.api.ide
+import kotlin.script.experimental.api.implicitReceivers
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 import kotlin.script.experimental.jvmhost.createJvmScriptDefinitionFromTemplate
@@ -46,6 +50,8 @@ class KonfigKtsEngineFactory : KotlinJsr223JvmScriptEngineFactoryBase() {
 
 /**
  * Factory to load Konfig from `*.konfig.kts` file
+ *
+ * @see Konfig
  * */
 class KonfigKtsFactory {
     companion object {
