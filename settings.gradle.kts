@@ -28,4 +28,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "konfig"
-include("api", "impl", "ksp", "kts", "sample")
+include("api", "impl", "kts", "utils", "full", "ksp", "sample")

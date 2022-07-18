@@ -6,12 +6,12 @@
 
 - `api` - API annotations and `Konfig` container interface
 - `impl` - simple API implementation and default `konfig {...}` DSL entry point
-- `ksp` - Kotlin Symbol Processor generating DSL according to API annotations
 - `kts` - Kotlin Script definition allowing to describe Konfig inside `*.konfig.kts` file
+- `utils` - some useful utilities
+- `full` - contains all modules above
+- `ksp` - Kotlin Symbol Processor generating DSL according to API annotations
 
 ## Quick start
-
-### With Kotlin Script
 
 ```kotlin
 //build.gradle.kts
@@ -21,8 +21,8 @@ plugins {
 }
 
 dependencies {
+    implementation("ru.potatophobe.konfig:full:$konfigVersion") // Full Konfig implementation
     ksp("ru.potatophobe.konfig:ksp:$konfigVersion") // Kotlin Symbol Processor
-    implementation("ru.potatophobe.konfig:kts:$konfigVersion") // Kotlin Script Konfig implementation
 }
 
 kotlin {
@@ -55,7 +55,7 @@ application {
     name = "sample"
     properties {
         prop1 = "1"
-        prop2 = "2"
+        prop2 = env("PROP2") ?: "2"
     }
 }
 ```
@@ -69,15 +69,7 @@ val konfig = konfigKtsFactory.load() // By default, 'resources/application.konfi
 val applicationKonfig = konfig.get(ApplicationKonfig::class) // ApplicationKonfig(name=sample, properties=Properties(prop1=1, prop2=2))
 ```
 
-### With plain Kotlin
-
-```kotlin
-//build.gradle.kts same as above
-dependencies {
-    ksp("ru.potatophobe.konfig:ksp:$konfigVersion")
-    implementation("ru.potatophobe.konfig:impl:$konfigVersion") // Plain Kotlin Konfig implementation
-}
-```
+#### or
 
 ```kotlin
 //main.kt
@@ -86,7 +78,7 @@ val konfig = konfig {
         name = "sample"
         properties {
             prop1 = "1"
-            prop2 = "2"
+            prop2 = env("PROP2") ?: "2"
         }
     }
 }
