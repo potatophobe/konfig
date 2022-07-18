@@ -2,23 +2,38 @@ val projectRevision: String by project
 
 plugins {
     kotlin("jvm")
-    `maven-publish`
-    signing
+    id("maven-publish")
+    id("signing")
 }
 
 group = "ru.potatophobe.konfig"
 version = projectRevision
+
+dependencies {
+    api(kotlin("reflect"))
+}
 
 java {
     withJavadocJar()
     withSourcesJar()
 }
 
-dependencies {
-    api(kotlin("reflect"))
-}
-
 publishing {
+    repositories {
+        maven {
+            val ossrhUsername: String by project
+            val ossrhPassword: String by project
+
+            url = run {
+                if (projectRevision.endsWith("SNAPSHOT")) uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                else uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            }
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
+            }
+        }
+    }
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
@@ -45,21 +60,7 @@ publishing {
                     developerConnection.set("scm:git:https://github.com/potatophobe/konfig.git")
                 }
             }
-            repositories {
-                maven {
-                    val ossrhUsername: String by project
-                    val ossrhPassword: String by project
 
-                    url = run {
-                        if (projectRevision.endsWith("SNAPSHOT")) uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-                        else uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-                    }
-                    credentials {
-                        username = ossrhUsername
-                        password = ossrhPassword
-                    }
-                }
-            }
         }
     }
 }
