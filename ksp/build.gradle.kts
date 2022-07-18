@@ -9,6 +9,14 @@ plugins {
 group = "ru.potatophobe.konfig"
 version = projectRevision
 
+dependencies {
+    api(project(":api"))
+
+    implementation(libs.ksp.api)
+    implementation(libs.kotlinpoet)
+    implementation(libs.kotlinpoet.ksp)
+}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
