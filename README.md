@@ -1,6 +1,6 @@
 # `Konfig`
 
-### Kotlin config framework
+### Kotlin DSL config
 
 ## Modules
 
