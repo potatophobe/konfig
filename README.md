@@ -1,6 +1,6 @@
-# `Konfig`
+# `Konfig` - actually type-safe and highlighted Kotlin configuraton
 
-### Kotlin DSL config
+[![Maven Central](https://img.shields.io/badge/Maven%20Central-v1.0.1-blue)](https://search.maven.org/search?q=g:ru.potatophobe.konfig)
 
 ## Modules
 
@@ -11,10 +11,12 @@
 - `full` - contains all modules above
 - `ksp` - Kotlin Symbol Processor generating DSL according to API annotations
 
-## Quick start
+## Getting started
 
+- Configure build
 ```kotlin
 //build.gradle.kts
+
 plugins {
     kotlin("jvm")
     id("com.google.devtools.ksp") // Plugin to run Kotlin Symbol Processor
@@ -32,8 +34,8 @@ kotlin {
 }
 ```
 
+- Define Konfig class
 ```kotlin
-//ApplicationKonfig.kt
 data class Properties(
     val prop1: String,
     val prop2: String
@@ -47,10 +49,15 @@ data class ApplicationKonfig(
 )
 ```
 
-`>> gradle build`
+- Run build to generate DSL
+```bash
+>> gradle build
+```
 
+- Describe Konfig in `*.konfig.kts` file
 ```kotlin
 //application.konfig.kts
+
 application {
     name = "sample"
     properties {
@@ -60,8 +67,10 @@ application {
 }
 ```
 
+- Load Konfig from `*.konfig.kts` file
 ```kotlin
 //main.kt
+
 val konfigKtsFactory = KonfigKtsFactory() // Factory to load Konfig from Kotlin Script file
 
 val konfig = konfigKtsFactory.load() // By default, 'resources/application.konfig.kts' will be loaded
@@ -69,10 +78,10 @@ val konfig = konfigKtsFactory.load() // By default, 'resources/application.konfi
 val applicationKonfig = konfig.get(ApplicationKonfig::class) // ApplicationKonfig(name=sample, properties=Properties(prop1=1, prop2=2))
 ```
 
-#### or
-
+- Or descriebe and get Konfig immediately in application
 ```kotlin
 //main.kt
+
 val konfig = konfig {
     application {
         name = "sample"
