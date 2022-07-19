@@ -1,0 +1,26 @@
+name: Tag
+on:
+  push:
+    branches:
+      - master
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Fetch Version
+        id: fetch-version
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: gradle.properties
+          property: projectRevision
+
+      - name: Create Tag
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{ secrets.REMOTE_TOKEN }}
+          default_bump: false
+          default_prerelease_bump: false
+          custom_tag: ${{ steps.fetch-version.outputs.value }}
