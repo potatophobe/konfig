@@ -41,9 +41,6 @@ package ru.potatophobe.konfig.api
  *
  * ```
  *
- * @param name nested Konfig DSL function name. Property name will be used by default
- * @param constructorBinding bind properties through single allArgs constructor
- *
  * @see KonfigClass
  * @see NestedKonfigList
  * @see NestedKonfigMap
@@ -51,4 +48,4 @@ package ru.potatophobe.konfig.api
 @MustBeDocumented
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.PROPERTY)
-annotation class NestedKonfigList(val name: String = "", val constructorBinding: Boolean = true)
+annotation class NestedKonfigList

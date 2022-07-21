@@ -8,4 +8,11 @@ package ru.potatophobe.konfig.api
 @KonfigDsl
 interface KonfigScope {
     fun add(konfig: Any)
+
+    /**
+     * @return Konfig container with all declared inside konfigs
+     *
+     * @see Konfig
+     * */
+    fun toKonfig(): Konfig
 }

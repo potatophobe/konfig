@@ -32,7 +32,6 @@ package ru.potatophobe.konfig.api
  * ```
  *
  * @param name Konfig DSL root function name. Class name will be used by default
- * @param constructorBinding bind properties through single allArgs constructor
  *
  * @see KonfigScope
  * @see NestedKonfig
@@ -42,4 +41,4 @@ package ru.potatophobe.konfig.api
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
-annotation class KonfigClass(val name: String = "", val constructorBinding: Boolean = true)
+annotation class KonfigClass(val name: String = "")
