@@ -11,6 +11,12 @@ version = projectRevision
 
 dependencies {
     api(project(":api"))
+
+    testImplementation(kotlin("test"))
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 java {

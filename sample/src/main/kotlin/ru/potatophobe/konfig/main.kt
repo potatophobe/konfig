@@ -1,17 +1,30 @@
 package ru.potatophobe.konfig
 
-data class Properties(
-    val prop1: String,
-    val prop2: String
-)
+import ru.potatophobe.konfig.api.KonfigClass
+import ru.potatophobe.konfig.api.NestedKonfig
+import ru.potatophobe.konfig.api.NestedKonfigList
+import ru.potatophobe.konfig.api.NestedKonfigMap
+import ru.potatophobe.konfig.kts.KonfigKtsFactory
 
 @KonfigClass("application")
 data class ApplicationKonfig(
-    val name: String,
+    val name: String = "application",
     @NestedKonfig
-    val properties: Properties
-)
+    val property: Property,
+    @NestedKonfigList
+    val properties: List<Property>,
+    @NestedKonfigMap
+    val propertiesMap: Map<String, Property>
+) {
+    data class Property(
+        val value: String?
+    )
+}
 
 fun main() {
-    println(KonfigKtsFactory().load().get(ApplicationKonfig::class))
+    val konfig = KonfigKtsFactory().load()
+
+    val applicationKonfig = konfig.get(ApplicationKonfig::class)
+
+    println(applicationKonfig)
 }
