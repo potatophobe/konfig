@@ -8,7 +8,7 @@ import ru.potatophobe.konfig.utils.lateinit
 @KonfigDsl
 open class KonfigMapScope<K, VS> {
     private val mutableKeysToKonfigMapValueDescriptors: MutableMap<K, KonfigMapValueDescriptor<VS>> = mutableMapOf()
-    val keysToKonfigBlocks: Map<K, VS.() -> Unit> = mutableKeysToKonfigMapValueDescriptors.mapValues { (_, v) -> v.konfigBlock }
+    val keysToKonfigBlocks: Map<K, VS.() -> Unit> get() = mutableKeysToKonfigMapValueDescriptors.mapValues { (_, v) -> v.konfigBlock }
 
     @KonfigDsl
     open fun key(key: K): KonfigMapValueDescriptor<VS> {

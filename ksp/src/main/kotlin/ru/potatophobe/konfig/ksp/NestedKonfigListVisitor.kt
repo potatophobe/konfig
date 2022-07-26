@@ -46,6 +46,7 @@ class NestedKonfigListVisitor(
                     addImport(UTILS_PACKAGE, ISINITIALIZED_FUNCTION)
                     addType(
                         TypeSpec.classBuilder(className).apply {
+                            addAnnotation(KonfigDsl::class)
                             parameters.forEach {
                                 addProperty(
                                     PropertySpec.builder(it.nameAsString(), it.type.toTypeName()).apply {
@@ -58,21 +59,15 @@ class NestedKonfigListVisitor(
                             addFunction(
                                 FunSpec.builder(TOKONFIG_FUNCTION).apply {
                                     returns(classDeclaration.toClassName())
+                                    addCode("val constructor = ${classDeclaration.toClassName().simpleNames.joinToString(".")}::class.constructors.single()\n")
+                                    addCode("val parameterMap = mutableMapOf<${KParameter::class.asClassName().canonicalName}, Any?>()\n")
                                     addCode(
-                                        """
-                                        val constructor = ${classDeclaration.toClassName().simpleName}::class.constructors.single()
-                                        val parameterMap = mutableMapOf<${KParameter::class.asClassName().canonicalName}, Any?>()
-                                        ${
-                                            parameters.joinToString("\n") {
-                                                """
-                                                if ($ISINITIALIZED_FUNCTION(this::${it.nameAsString()}))
-                                                    parameterMap[constructor.parameters.single { it.name == "${it.nameAsString()}" }] = this.${it.nameAsString()}
-                                                """.trimIndent()
-                                            }
+                                        parameters.joinToString("") {
+                                            "if ($ISINITIALIZED_FUNCTION(this::${it.nameAsString()}))\n" +
+                                                    "\tparameterMap[constructor.parameters.single { it.name == \"${it.nameAsString()}\" }] = this.${it.nameAsString()}\n"
                                         }
-                                        return constructor.callBy(parameterMap)
-                                        """.trimIndent()
                                     )
+                                    addCode("return constructor.callBy(parameterMap)")
                                 }.build()
                             )
                         }.build()
@@ -111,13 +106,11 @@ class NestedKonfigListVisitor(
                         )
                     )
                     addCode(
-                        """
-                        this.$name = ${KonfigListScope::class.asClassName().canonicalName}<${scopeClassName.canonicalName}>().apply($KONFIGBLOCK_PARAMETER).konfigBlocks
-                            .map {
-                                ${scopeClassName.simpleName}().apply(it).$TOKONFIG_FUNCTION()
-                            }
-                        """.trimIndent()
+                        "this.$name = ${KonfigListScope::class.asClassName().simpleNames.joinToString(".")}<${
+                            scopeClassName.simpleNames.joinToString(".")
+                        }>().apply($KONFIGBLOCK_PARAMETER)\n"
                     )
+                    addCode(".konfigBlocks.map { ${scopeClassName.simpleNames.joinToString(".")}().apply(it).$TOKONFIG_FUNCTION() }")
                 }.build()
             )
         }.build().writeTo(codeGenerator, false)
