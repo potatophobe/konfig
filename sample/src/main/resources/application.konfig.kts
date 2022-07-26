@@ -1,9 +1,26 @@
-import ru.potatophobe.konfig.application
+import ru.potatophobe.konfig.generated.application
+import ru.potatophobe.konfig.generated.properties
+import ru.potatophobe.konfig.generated.propertiesMap
+import ru.potatophobe.konfig.generated.property
 
 application {
-    name = "sample"
+    property {
+        value = "1"
+    }
     properties {
-        prop1 = "1"
-        prop2 = "2"
+        element {
+            value = "1"
+        }
+        element {
+            value = "2"
+        }
+    }
+    propertiesMap {
+        key("1") value {
+            value = "1"
+        }
+        key("2") value {
+            value = "2"
+        }
     }
 }

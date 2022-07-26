@@ -36,17 +36,20 @@ kotlin {
 
 - Define Konfig class
 ```kotlin
-data class Properties(
-    val prop1: String,
-    val prop2: String
-)
-
 @KonfigClass("application")
 data class ApplicationKonfig(
-    val name: String,
+    val name: String = "application",
     @NestedKonfig
-    val properties: Properties
-)
+    val property: Property,
+    @NestedKonfigList
+    val properties: List<Property>,
+    @NestedKonfigMap
+    val propertiesMap: Map<String, Property>
+) {
+    data class Property(
+        val value: String?
+    )
+}
 ```
 
 - Run build to generate DSL
@@ -59,10 +62,24 @@ data class ApplicationKonfig(
 //application.konfig.kts
 
 application {
-    name = "sample"
+    property {
+        value = "1"
+    }
     properties {
-        prop1 = "1"
-        prop2 = env("PROP2") ?: "2"
+        element {
+            value = "1"
+        }
+        element {
+            value = "2"
+        }
+    }
+    propertiesMap {
+        key("1") value {
+            value = "1"
+        }
+        key("2") value {
+            value = "2"
+        }
     }
 }
 ```
@@ -75,7 +92,7 @@ val konfigKtsFactory = KonfigKtsFactory() // Factory to load Konfig from Kotlin 
 
 val konfig = konfigKtsFactory.load() // By default, 'resources/application.konfig.kts' will be loaded
 
-val applicationKonfig = konfig.get(ApplicationKonfig::class) // ApplicationKonfig(name=sample, properties=Properties(prop1=1, prop2=2))
+val applicationKonfig = konfig.get(ApplicationKonfig::class) // ApplicationKonfig(name=application, property=Property(value=1), properties=[Property(value=1), Property(value=2)], propertiesMap={1=Property(value=1), 2=Property(value=2)})
 ```
 
 - Or descriebe and get Konfig immediately in application
@@ -84,13 +101,27 @@ val applicationKonfig = konfig.get(ApplicationKonfig::class) // ApplicationKonfi
 
 val konfig = konfig {
     application {
-        name = "sample"
+        property {
+            value = "1"
+        }
         properties {
-            prop1 = "1"
-            prop2 = env("PROP2") ?: "2"
+            element {
+                value = "1"
+            }
+            element {
+                value = "2"
+            }
+        }
+        propertiesMap {
+            key("1") value {
+                value = "1"
+            }
+            key("2") value {
+                value = "2"
+            }
         }
     }
 }
 
-val applicationKonfig = konfig.get(ApplicationKonfig::class) // ApplicationKonfig(name=sample, properties=Properties(prop1=1, prop2=2))
+val applicationKonfig = konfig.get(ApplicationKonfig::class) // ApplicationKonfig(name=application, property=Property(value=1), properties=[Property(value=1), Property(value=2)], propertiesMap={1=Property(value=1), 2=Property(value=2)})
 ```

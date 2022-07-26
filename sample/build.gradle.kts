@@ -10,7 +10,7 @@ version = projectRevision
 
 dependencies {
     ksp(project(":ksp"))
-    implementation(project(":kts"))
+    implementation(project(":full"))
 }
 
 kotlin {
