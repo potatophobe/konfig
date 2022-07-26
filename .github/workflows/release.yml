@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: adopt
-          java-version: 17
+          java-version: 8
 
       - name: Decrypt Secring
         run: gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.SECRING_PASSWORD }}" --output secring.gpg secring.gpg.gpg
