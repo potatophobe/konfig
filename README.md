@@ -1,6 +1,6 @@
 # `Konfig` - actually type-safe and highlighted Kotlin configuraton
 
-[![Maven Central](https://img.shields.io/badge/Maven%20Central-v1.0.1-blue)](https://search.maven.org/search?q=g:ru.potatophobe.konfig)
+[![Maven Central](https://img.shields.io/badge/Maven%20Central-grey)](https://search.maven.org/search?q=g:ru.potatophobe.konfig)
 
 ## Modules
 
