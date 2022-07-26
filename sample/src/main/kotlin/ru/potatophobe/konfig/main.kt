@@ -4,11 +4,7 @@ import ru.potatophobe.konfig.api.KonfigClass
 import ru.potatophobe.konfig.api.NestedKonfig
 import ru.potatophobe.konfig.api.NestedKonfigList
 import ru.potatophobe.konfig.api.NestedKonfigMap
-
-data class Properties(
-    val prop1: String,
-    val prop2: String
-)
+import ru.potatophobe.konfig.kts.KonfigKtsFactory
 
 @KonfigClass("application")
 data class ApplicationKonfig(
@@ -26,5 +22,9 @@ data class ApplicationKonfig(
 }
 
 fun main() {
-//    println(KonfigKtsFactory().load().get(ApplicationKonfig::class))
+    val konfig = KonfigKtsFactory().load()
+
+    val applicationKonfig = konfig.get(ApplicationKonfig::class)
+
+    println(applicationKonfig)
 }
