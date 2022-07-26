@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: adopt
-          java-version: 17
+          java-version: 8
 
       - name: Decrypt Secring
         run: gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.SECRING_PASSWORD }}" --output secring.gpg secring.gpg.gpg
@@ -28,7 +28,7 @@ jobs:
         run: ./gradlew clean build --no-daemon -PossrhUsername=${{ secrets.OSSRH_USERNAME }} -PossrhPassword=${{ secrets.OSSRH_PASSWORD }}
 
       - name: Gradle Publish
-        run: ./gradlew publish -Psigning.secretKeyRingFile=secring.gpg -Psigning.keyId=${{ secrets.SIGNING_KEYID }} -Psigning.password=${{ secrets.SIGNING_PASSWORD }} -PossrhUsername=${{ secrets.OSSRH_USERNAME }} -PossrhPassword=${{ secrets.OSSRH_PASSWORD }}
+        run: ./gradlew publish -Psigning.secretKeyRingFile=../secring.gpg -Psigning.keyId=${{ secrets.SIGNING_KEYID }} -Psigning.password=${{ secrets.SIGNING_PASSWORD }} -PossrhUsername=${{ secrets.OSSRH_USERNAME }} -PossrhPassword=${{ secrets.OSSRH_PASSWORD }}
 
       - name: Gradle Close and Release Repository
         run: ./gradlew closeAndReleaseRepository -PossrhUsername=${{ secrets.OSSRH_USERNAME }} -PossrhPassword=${{ secrets.OSSRH_PASSWORD }}
