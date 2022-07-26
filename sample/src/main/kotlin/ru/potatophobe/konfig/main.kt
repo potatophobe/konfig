@@ -1,5 +1,10 @@
 package ru.potatophobe.konfig
 
+import ru.potatophobe.konfig.api.KonfigClass
+import ru.potatophobe.konfig.api.NestedKonfig
+import ru.potatophobe.konfig.api.NestedKonfigList
+import ru.potatophobe.konfig.api.NestedKonfigMap
+
 data class Properties(
     val prop1: String,
     val prop2: String
@@ -7,11 +12,19 @@ data class Properties(
 
 @KonfigClass("application")
 data class ApplicationKonfig(
-    val name: String,
+    val name: String = "application",
     @NestedKonfig
-    val properties: Properties
-)
+    val property: Property,
+    @NestedKonfigList
+    val properties: List<Property>,
+    @NestedKonfigMap
+    val propertiesMap: Map<String, Property>
+) {
+    data class Property(
+        val value: String?
+    )
+}
 
 fun main() {
-    println(KonfigKtsFactory().load().get(ApplicationKonfig::class))
+//    println(KonfigKtsFactory().load().get(ApplicationKonfig::class))
 }
